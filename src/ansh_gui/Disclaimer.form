@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="title" type="java.lang.String" value="Disclaimer"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="jRadioButton1" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="102" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace pref="49" max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="jScrollPane1" min="-2" pref="856" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="accept" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" pref="86" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="482" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
+              <Component id="jRadioButton1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="accept" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JButton" name="jButton1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Decline"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="accept">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Accept"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="acceptActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="jRadioButton1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Accept"/>
+      </Properties>
+      <BindingProperties>
+        <BindingProperty name="selected" source="accept" sourcePath="${enabled}" target="jRadioButton1" targetPath="selected" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/ansh_gui/Ansh_Login.png"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="DejaVu Sans Condensed" size="24" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="A Dynamic Comprehensive Database Management System "/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="jTextArea1">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="rows" type="int" value="5"/>
+            <Property name="text" type="java.lang.String" value=" Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed maximus dapibus leo eu consequat. Maecenas rutrum accumsan ligula, &#xa;vel accumsan orci condimentum ac. Integer eget nisl nunc. Maecenas dapibus lacus quis nunc feugiat convallis. Nulla rhoncus metus&#xa;sed mi aliquam interdum. Etiam semper odio sed velit convallis, vitae facilisis magna varius. Cras mattis nibh sit amet magna dignissim&#xa;euismod. Suspendisse potenti. Pellentesque a est eget nisi lacinia sagittis vitae dapibus turpis. Etiam pulvinar, nisl sed tincidunt blandit,&#xa; quam ante elementum turpis, nec aliquam tellus neque et tellus.&#xa;&#xa;Nullam eget justo nec arcu ultricies eleifend vitae eu sapien. Proin eget feugiat mauris. Praesent vestibulum quam ac arcu bibendum ultricies.&#xa;Aenean id vehicula lacus. In dolor urna, molestie id nisi sit amet, pharetra rutrum urna. Curabitur malesuada quam a ante ultrices eleifend. &#xa;Donec vitae mi eget arcu varius tempus. Nam varius volutpat felis, sit amet iaculis sem condimentum vel. Vestibulum tristique lectus id &#xa;eros congue gravida. Sed non iaculis purus, at malesuada tellus. Vestibulum dictum posuere semper. Aenean ornare consectetur iaculis.&#xa;Etiam ut ultricies quam. Donec nulla leo, bibendum at purus in, euismod vulputate lorem.&#xa;&#xa;Duis ante urna, laoreet ut rhoncus finibus, interdum quis sapien. Etiam tempor elementum massa, ut feugiat orci aliquet et.&#xa;Aenean a luctus nisi. Aliquam gravida egestas sem, at venenatis nunc. Cras sollicitudin lectus in velit imperdiet, id ornare sapien&#xa;ullamcorper. Sed laoreet ipsum faucibus velit pharetra commodo. Praesent consequat odio sed porta sagittis. &#xa; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed maximus dapibus leo eu consequat. Maecenas rutrum accumsan ligula, &#xa;vel accumsan orci condimentum ac. Integer eget nisl nunc. Maecenas dapibus lacus quis nunc feugiat convallis. Nulla rhoncus metus&#xa;sed mi aliquam interdum. Etiam semper odio sed velit convallis, vitae facilisis magna varius. Cras mattis nibh sit amet magna dignissim&#xa;euismod. Suspendisse potenti. Pellentesque a est eget nisi lacinia sagittis vitae dapibus turpis. Etiam pulvinar, nisl sed tincidunt blandit,&#xa; quam ante elementum turpis, nec aliquam tellus neque et tellus.&#xa;&#xa;Nullam eget justo nec arcu ultricies eleifend vitae eu sapien. Proin eget feugiat mauris. Praesent vestibulum quam ac arcu bibendum ultricies.&#xa;Aenean id vehicula lacus. In dolor urna, molestie id nisi sit amet, pharetra rutrum urna. Curabitur malesuada quam a ante ultrices eleifend. &#xa;Donec vitae mi eget arcu varius tempus. Nam varius volutpat felis, sit amet iaculis sem condimentum vel. Vestibulum tristique lectus id &#xa;eros congue gravida. Sed non iaculis purus, at malesuada tellus. Vestibulum dictum posuere semper. Aenean ornare consectetur iaculis.&#xa;Etiam ut ultricies quam. Donec nulla leo, bibendum at purus in, euismod vulputate lorem.&#xa;&#xa;Duis ante urna, laoreet ut rhoncus finibus, interdum quis sapien. Etiam tempor elementum massa, ut feugiat orci aliquet et.&#xa;Aenean a luctus nisi. Aliquam gravida egestas sem, at venenatis nunc. Cras sollicitudin lectus in velit imperdiet, id ornare sapien&#xa;ullamcorper. Sed laoreet ipsum faucibus velit pharetra commodo. Praesent consequat odio sed porta sagittis. &#xa; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed maximus dapibus leo eu consequat. Maecenas rutrum accumsan ligula, &#xa;vel accumsan orci condimentum ac. Integer eget nisl nunc. Maecenas dapibus lacus quis nunc feugiat convallis. Nulla rhoncus metus&#xa;sed mi aliquam interdum. Etiam semper odio sed velit convallis, vitae facilisis magna varius. Cras mattis nibh sit amet magna dignissim&#xa;euismod. Suspendisse potenti. Pellentesque a est eget nisi lacinia sagittis vitae dapibus turpis. Etiam pulvinar, nisl sed tincidunt blandit,&#xa; quam ante elementum turpis, nec aliquam tellus neque et tellus.&#xa;&#xa;Nullam eget justo nec arcu ultricies eleifend vitae eu sapien. Proin eget feugiat mauris. Praesent vestibulum quam ac arcu bibendum ultricies.&#xa;Aenean id vehicula lacus. In dolor urna, molestie id nisi sit amet, pharetra rutrum urna. Curabitur malesuada quam a ante ultrices eleifend. &#xa;Donec vitae mi eget arcu varius tempus. Nam varius volutpat felis, sit amet iaculis sem condimentum vel. Vestibulum tristique lectus id &#xa;eros congue gravida. Sed non iaculis purus, at malesuada tellus. Vestibulum dictum posuere semper. Aenean ornare consectetur iaculis.&#xa;Etiam ut ultricies quam. Donec nulla leo, bibendum at purus in, euismod vulputate lorem.&#xa;&#xa;Duis ante urna, laoreet ut rhoncus finibus, interdum quis sapien. Etiam tempor elementum massa, ut feugiat orci aliquet et.&#xa;Aenean a luctus nisi. Aliquam gravida egestas sem, at venenatis nunc. Cras sollicitudin lectus in velit imperdiet, id ornare sapien&#xa;ullamcorper. Sed laoreet ipsum faucibus velit pharetra commodo. Praesent consequat odio sed porta sagittis. "/>
+            <Property name="focusable" type="boolean" value="false"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>
