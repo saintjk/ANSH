@@ -4,8 +4,11 @@
  * and open the template in the editor.
  */
 package ansh_gui;
+import com.itextpdf.text.BadElementException;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -586,7 +589,7 @@ jtable.setPreferredScrollableViewportSize(d);
             con= Connect.ConnectDB();
         
              String sql= gen_query();
-             System.out.println(sql);
+            // System.out.println(sql);
              
              pst=con.prepareStatement(sql);
              rs= pst.executeQuery();
@@ -597,7 +600,7 @@ jtable.setPreferredScrollableViewportSize(d);
              rows = rs.getRow();
              rs.beforeFirst();
             
-           System.out.println(rows);
+           //System.out.println(rows);
              
              
              for(int i=0;i<col;i++)
@@ -635,8 +638,9 @@ export.setEnabled(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void exportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportActionPerformed
-    save frm = new save(jtable);
-  frm.setVisible(true);
+       save frm = new save(jtable);
+            frm.setVisible(true);
+      
     }//GEN-LAST:event_exportActionPerformed
 
     private void operator1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_operator1ActionPerformed
