@@ -15,6 +15,8 @@ import java.util.logging.Logger;
 import user_view.save;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import net.proteanit.sql.DbUtils;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -30,7 +32,7 @@ Connection con=null;
 int rno;
 String row,table_id; 
 ResultSet rs=null;
-PreparedStatement pst=null;
+PreparedStatement pst=null, pst1=null;
     /**
      * Creates new form search_result
      */
@@ -40,13 +42,21 @@ PreparedStatement pst=null;
 con= Connect.ConnectDB();     
     // String merge = "%"+ jText_Search.getText() +"%";
       String k = "%"+key+"%";
-               String sql="select Srno as 'Sr no',SubjectId as 'Subject Id',Name as 'Name',Gender as 'Gender',Status as 'Status',DOB as 'DOB',Age as 'Age',Comments as 'Comments',DOS as 'DOS' from Master_record  WHERE SubjectId LIKE '" +k+"' OR Name LIKE '" +k+ "'OR DOS LIKE '" +k+ "' ORDER BY Srno ASC";
+      String sql1="SET @count:=0;"; 
+       
+               String sql="SELECT  (@count:=@count+1) AS 'Sr no',SubjectId as 'Subject Id',Name as 'Name',Gender as 'Gender',Status as 'Status',DOB as 'DOB',Age as 'Age',Comments as 'Comments',DOS as 'DOS' from Master_record  WHERE SubjectId LIKE '" +k+"' OR Name LIKE '" +k+ "'OR DOS LIKE '" +k+ "' ORDER BY Srno ASC";
       
             //JOptionPane.showMessageDialog(null,sql);
+          pst1=con.prepareStatement(sql1);
           pst=con.prepareStatement(sql);
+          pst1.executeQuery();
           rs= pst.executeQuery();
-         master_table.setModel(DbUtils.resultSetToTableModel(rs));
+          DefaultTableModel model = (DefaultTableModel) DbUtils.resultSetToTableModel(rs);
+         master_table.setModel(model);
          rno=master_table.getRowCount();
+            
+               TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(model);
+        master_table.setRowSorter(sorter);
               row= Integer.toString(rno);
    rowcnt.setText(row);
          }
@@ -212,9 +222,13 @@ con= Connect.ConnectDB();
     }//GEN-LAST:event_jText_SearchMouseClicked
  private void Search_Data(){
          String merge = "%"+ jText_Search.getText() +"%";
-       String sql="select Srno as 'Sr no',SubjectId as 'Subject Id',Name as 'Name',Gender as 'Gender',Status as 'Status',DOB as 'DOB',Age as 'Age',Comments as 'Comments',DOS as 'DOS' from Master_record  WHERE SubjectId LIKE '" +merge+"' OR Name LIKE '" +merge+ "'OR DOS LIKE '" +merge+ "' ORDER BY Srno ASC ";
+       String sql1="SET @count:=0;"; 
+       
+               String sql="SELECT  (@count:=@count+1) AS 'Sr no',SubjectId as 'Subject Id',Name as 'Name',Gender as 'Gender',Status as 'Status',DOB as 'DOB',Age as 'Age',Comments as 'Comments',DOS as 'DOS' from Master_record  WHERE SubjectId LIKE '" +merge+"' OR Name LIKE '" +merge+ "'OR DOS LIKE '" +merge+ "' ORDER BY Srno ASC ";
         try{
-         pst=con.prepareStatement(sql);
+         pst1=con.prepareStatement(sql1);
+          pst=con.prepareStatement(sql);
+          pst1.executeQuery();
           rs= pst.executeQuery();
          master_table.setModel(DbUtils.resultSetToTableModel(rs));
      rno=master_table.getRowCount();
