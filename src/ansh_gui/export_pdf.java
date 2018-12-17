@@ -31,6 +31,7 @@ import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -107,6 +108,8 @@ public class export_pdf {
                 for (int cols = 0; cols < table.getColumnCount(); cols++) {
                       PdfPCell c2 = new PdfPCell(new Phrase(table.getModel().getValueAt(rows, cols).toString(),small));
                         c2.setHorizontalAlignment(Element.ALIGN_CENTER);  
+                       
+                        c2.setBackgroundColor(BaseColor.LIGHT_GRAY);
                     pdfTable.addCell(c2);
 
                 }

@@ -64,7 +64,7 @@ String row,nos="0";
 
         jLabel1.setText("Month");
 
-        yrcombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2008", "2009", "2010", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2025", "2026", " " }));
+        yrcombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--", "2008", "2009", "2010", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2025", "2026" }));
 
         jLabel2.setText("Year");
 
@@ -201,9 +201,16 @@ String row,nos="0";
    
  private String getsubjectnum(String  key,String cond) throws SQLException
  {
+           String month = (String) monthcombo.getSelectedItem();
+
+     String year = (String) yrcombo.getSelectedItem();
     String sqlr = null;
     if(cond!="--")
     {        sqlr = "SELECT COUNT(DISTINCT SubjectId) FROM `Master_record` WHERE DOS LIKE '"+key+"' AND (`Status` LIKE '%"+cond+ "%');";}
+           else if(("--".equals(month))&&("--".equals(year)))
+           {
+               sqlr = "SELECT COUNT(DISTINCT SubjectId) FROM `Master_record` WHERE 1;";
+           }
     else
     {
           sqlr = "SELECT COUNT(DISTINCT SubjectId) FROM `Master_record` WHERE DOS LIKE '"+key+"';";
@@ -224,7 +231,7 @@ String row,nos="0";
  
     private void Search_Data(){
       String month = (String) monthcombo.getSelectedItem();
-     String merge,filter,sql,sql1,sql2;
+     String merge = null,filter,sql,sql1,sql2;
      String year = (String) yrcombo.getSelectedItem();
      String yr=year.substring(2);
      con= Connect.ConnectDB();
@@ -232,6 +239,11 @@ String row,nos="0";
      {
       merge = "%/"+yr +"%";    
      }
+       else if(("--".equals(month))&&("--".equals(year)))
+       {
+             sql1="SET @count:=0;"; 
+         sql2=" SELECT  (@count:=@count+1) AS 'Sr no',Entry_no as 'Entry No',SubjectId as 'Subject Id',Name as 'Name',Gender as 'Gender',Status as 'Status',DOB as 'DOB',Age as 'Age',Comments as 'Comments',DOS as 'DOS' from Master_record  WHERE 1;";
+       }
      else{
          String mon = getmonth(month);
             merge = "%"+ mon + "/"+yr +"%";
@@ -240,14 +252,14 @@ String row,nos="0";
      {
          filter=(String) fltr.getSelectedItem();
          sql1="SET @count:=0;"; 
-         sql2=" SELECT  (@count:=@count+1) AS 'Sr no',Srno as 'Entry No',SubjectId as 'Subject Id',Name as 'Name',Gender as 'Gender',Status as 'Status',DOB as 'DOB',Age as 'Age',Comments as 'Comments',DOS as 'DOS' from Master_record  WHERE  (DOS LIKE '" +merge+"') AND (`Status` LIKE '%"+filter+ "%');";
+         sql2=" SELECT  (@count:=@count+1) AS 'Sr no',Entry_no as 'Entry No',SubjectId as 'Subject Id',Name as 'Name',Gender as 'Gender',Status as 'Status',DOB as 'DOB',Age as 'Age',Comments as 'Comments',DOS as 'DOS' from Master_record  WHERE  (DOS LIKE '" +merge+"') AND (`Status` LIKE '%"+filter+ "%');";
   //    System.out.println(sql2+"\n");
      }
     
   else
      {
        sql1="SET @count:=0;"; 
-         sql2=" SELECT  (@count:=@count+1) AS 'Sr no',Srno as 'Entry No',SubjectId as 'Subject Id',Name as 'Name',Gender as 'Gender',Status as 'Status',DOB as 'DOB',Age as 'Age',Comments as 'Comments',DOS as 'DOS' from Master_record  WHERE  DOS LIKE '" +merge+ "' ORDER BY `Srno` ASC ;";
+         sql2=" SELECT  (@count:=@count+1) AS 'Sr no',Entry_no as 'Entry No',SubjectId as 'Subject Id',Name as 'Name',Gender as 'Gender',Status as 'Status',DOB as 'DOB',Age as 'Age',Comments as 'Comments',DOS as 'DOS' from Master_record  WHERE  DOS LIKE '" +merge+ "' ORDER BY `Srno` ASC ;";
      //      System.out.println(sql2+"\n");
      }
         

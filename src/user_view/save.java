@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package user_view;
+import ansh_gui.export_pdf;
+import ansh_gui.project_data_viewer;
+import com.itextpdf.text.BadElementException;
 import java.awt.event.KeyEvent;
 import java.io.*;
 import java.io.IOException;
@@ -13,6 +16,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.JTable;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.commons.io.FilenameUtils;
 
 
@@ -32,6 +36,9 @@ JTable mt;
         mt = master_table;
    
         initComponents();
+         xlsave.addChoosableFileFilter(new FileNameExtensionFilter("Microsoft Excel (xls)", "xls"));
+         xlsave.addChoosableFileFilter(new FileNameExtensionFilter("PDF Document", "pdf"));
+         xlsave.setAcceptAllFileFilterUsed(true);
     }
 
     /**
@@ -86,7 +93,10 @@ JTable mt;
                     path=xlsave.getSelectedFile().getAbsolutePath();
                     filename=xlsave.getSelectedFile().getName();
                     File file = xlsave.getSelectedFile();
-                    
+  //  System.out.print(path);
+   
+if(xlsave.getFileFilter().toString().contains("xls"))
+{                
 if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("xls")) {
     // filename is OK as-is
 } else {
@@ -94,7 +104,8 @@ if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("xls")) {
     file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".xls"); // ALTERNATIVELY: remove the extension (if any) and replace it with ".xml"
 }
         // filedat =  path+"/"+ filename;
-    try {
+
+try {
         write2xl frm = new write2xl(mt,path);
         frm.wrfun();
         JOptionPane.showMessageDialog(null, "File saved successfully", "ANSH", INFORMATION_MESSAGE);
@@ -104,7 +115,39 @@ if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("xls")) {
         Logger.getLogger(save.class.getName()).log(Level.SEVERE, null, ex);
         JOptionPane.showMessageDialog(null, ex);
     }
-         
+}     
+else
+{
+    if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("pdf")) {
+               try {    
+            new export_pdf(mt,path);
+  JOptionPane.showMessageDialog(null, "File saved successfully", "ANSH", INFORMATION_MESSAGE);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(project_data_viewer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadElementException ex) {
+            Logger.getLogger(project_data_viewer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(project_data_viewer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
+
+ else {
+        
+    path=path+".pdf";
+  try {    
+            new export_pdf(mt,path);
+           JOptionPane.showMessageDialog(null, "File saved successfully", "ANSH", INFORMATION_MESSAGE);
+//save frm = new save(jtable);
+            //frm.setVisible(true);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(project_data_viewer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadElementException ex) {
+            Logger.getLogger(project_data_viewer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(project_data_viewer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+}
     }//GEN-LAST:event_xlsaveActionPerformed
 
     private void xlsaveKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_xlsaveKeyPressed
