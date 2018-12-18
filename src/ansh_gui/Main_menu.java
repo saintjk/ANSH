@@ -50,7 +50,7 @@ Connection con=null;
    File file;
    
  public static final String IMAGE = "Ansh_Login.png";
-    private static Font small = new Font(Font.FontFamily.TIMES_ROMAN, 5,
+    private static Font small = new Font(Font.FontFamily.TIMES_ROMAN, 10,
             Font.NORMAL);
 PreparedStatement pst=null;
 ResultSet rs=null;
@@ -907,7 +907,7 @@ model = (DefaultTableModel) DbUtils.resultSetToTableModel(rs);
             PdfPTable pdfTable = new PdfPTable(projects.getColumnCount());
             //adding table headers
             for (int i = 0; i < projects.getColumnCount(); i++) {
-             PdfPCell c1 = new PdfPCell(new Phrase("Projects"));
+             PdfPCell c1 = new PdfPCell(new Phrase("Projects",subFont));
              c1.setBackgroundColor(BaseColor.LIGHT_GRAY);
              c1.setHorizontalAlignment(Element.ALIGN_CENTER);  
              pdfTable.addCell(c1);
@@ -927,7 +927,7 @@ model = (DefaultTableModel) DbUtils.resultSetToTableModel(rs);
                     PdfPTable pdfTable0 = new PdfPTable(projectsog.getColumnCount());
             //adding table headers
             for (int i = 0; i < projectsog.getColumnCount(); i++) {
-             PdfPCell c1 = new PdfPCell(new Phrase("Projects OnGoing"));
+             PdfPCell c1 = new PdfPCell(new Phrase("Projects OnGoing",subFont));
              c1.setBackgroundColor(BaseColor.LIGHT_GRAY);
              c1.setHorizontalAlignment(Element.ALIGN_CENTER);  
              pdfTable0.addCell(c1);
@@ -947,7 +947,7 @@ model = (DefaultTableModel) DbUtils.resultSetToTableModel(rs);
                     PdfPTable pdfTable1 = new PdfPTable(paper.getColumnCount());
             //adding table headers
             for (int i = 0; i < paper.getColumnCount(); i++) {
-             PdfPCell c1 = new PdfPCell(new Phrase("Paper"));
+             PdfPCell c1 = new PdfPCell(new Phrase("Paper",subFont));
              c1.setBackgroundColor(BaseColor.LIGHT_GRAY);
              c1.setHorizontalAlignment(Element.ALIGN_CENTER);  
              pdfTable1.addCell(c1);
@@ -964,8 +964,12 @@ model = (DefaultTableModel) DbUtils.resultSetToTableModel(rs);
 
                 }
             }
+            Paragraph paragraph = new Paragraph();
+                  paragraph.add(new Paragraph(" "));
             doc.add(pdfTable);
+           doc.add(paragraph);
              doc.add(pdfTable0);
+                        doc.add(paragraph);
             doc.add(pdfTable1);
               doc.close();
         
