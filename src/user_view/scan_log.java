@@ -259,7 +259,7 @@ String row,nos="0";
   else
      {
        sql1="SET @count:=0;"; 
-         sql2=" SELECT  (@count:=@count+1) AS 'Sr no',Entry_no as 'Entry No',SubjectId as 'Subject Id',Name as 'Name',Gender as 'Gender',Status as 'Status',DOB as 'DOB',Age as 'Age',Comments as 'Comments',DOS as 'DOS' from Master_record  WHERE  DOS LIKE '" +merge+ "' ORDER BY `Srno` ASC ;";
+         sql2=" SELECT  (@count:=@count+1) AS 'Sr no',Entry_no as 'Entry No',SubjectId as 'Subject Id',Name as 'Name',Gender as 'Gender',Status as 'Status',DOB as 'DOB',Age as 'Age',Comments as 'Comments',DOS as 'DOS' from Master_record  WHERE  DOS LIKE '" +merge+ "' ;";
      //      System.out.println(sql2+"\n");
      }
         
