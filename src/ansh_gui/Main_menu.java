@@ -11,6 +11,9 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -18,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +33,17 @@ import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.title.Title;
+import org.jfree.data.category.*;
+import org.jfree.data.general.DefaultPieDataset;
 import subject.Subject_form;
 import user_ctrl.UsersMDI;
 import user_ctrl.UsersRegistration;
@@ -42,7 +57,7 @@ import user_view.search_result;
  *
  * @author lab
  */
-public class Main_menu extends javax.swing.JFrame {
+public final class Main_menu extends javax.swing.JFrame {
 Connection con=null;
  private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 5,
             Font.BOLD);
@@ -62,12 +77,25 @@ ResultSet rs=null;
     public Main_menu() {
     try {
         initComponents();
+        
         projects.getTableHeader().setUI(null);
         projectsog.getTableHeader().setUI(null);
         paper.getTableHeader().setUI(null);
              setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
   con= Connect.ConnectDB();  
-  stats.hide();
+ // stats.hide();
+  chartpanel.setBackground(null);
+   generate_status();
+ // chartpanel.setPreferredSize(chartsize());
+  ChartPanel CP = new ChartPanel(generatebarChart());
+
+  CP.setDomainZoomable(true);
+  CP.setPreferredSize(chartsize());
+   ChartPanel Pie = new ChartPanel(generatePieChart());
+   pipanel.setLayout(new java.awt.BorderLayout());
+  pipanel.add(Pie);
+  chartpanel.setLayout(new java.awt.BorderLayout());
+  chartpanel.add(CP, BorderLayout.EAST);
         String sqlp = "SELECT Name FROM `Project`";
         pst = con.prepareStatement(sqlp);
    
@@ -116,6 +144,16 @@ ResultSet rs=null;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton5 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        as = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        jButton10 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         stats = new javax.swing.JPanel();
@@ -129,27 +167,17 @@ ResultSet rs=null;
         jScrollPane3 = new javax.swing.JScrollPane();
         paper = new javax.swing.JTable();
         jButton11 = new javax.swing.JButton();
-        viewbutton = new javax.swing.JToggleButton();
         jButton6 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        as = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
         searchcombo = new javax.swing.JComboBox<String>();
         jButton9 = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         ptable = new javax.swing.JComboBox<String>();
         jButton2 = new javax.swing.JButton();
         more = new javax.swing.JButton();
+        chartpanel = new javax.swing.JPanel();
+        pipanel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -180,6 +208,7 @@ ResultSet rs=null;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("MAIN MENU | ANSH");
+        setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(891, 484));
         setPreferredSize(new java.awt.Dimension(1020, 720));
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -187,153 +216,6 @@ ResultSet rs=null;
                 formWindowClosing(evt);
             }
         });
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel2.setMaximumSize(new java.awt.Dimension(632, 288));
-        jPanel2.setMinimumSize(new java.awt.Dimension(0, 288));
-
-        jLabel1.setFont(new java.awt.Font("FreeSans", 0, 15)); // NOI18N
-        jLabel1.setText("ANSH Status");
-
-        jLabel5.setText("Projects");
-
-        jLabel6.setText("Project(OnGoing)");
-
-        jLabel7.setText("Paper");
-
-        projects.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
-            },
-            new String [] {
-                "Title 1"
-            }
-        ));
-        jScrollPane1.setViewportView(projects);
-
-        projectsog.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
-            },
-            new String [] {
-                "Title 1"
-            }
-        ));
-        jScrollPane2.setViewportView(projectsog);
-
-        paper.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
-            },
-            new String [] {
-                "Title 1"
-            }
-        ));
-        jScrollPane3.setViewportView(paper);
-
-        jButton11.setText("Export");
-        jButton11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton11ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout statsLayout = new javax.swing.GroupLayout(stats);
-        stats.setLayout(statsLayout);
-        statsLayout.setHorizontalGroup(
-            statsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, statsLayout.createSequentialGroup()
-                .addGroup(statsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, statsLayout.createSequentialGroup()
-                        .addGroup(statsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                        .addGroup(statsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(statsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(statsLayout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(61, 61, 61))
-                    .addGroup(statsLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton11)))
-                .addGap(20, 20, 20))
-        );
-        statsLayout.setVerticalGroup(
-            statsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(statsLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(statsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(statsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton11))
-        );
-
-        viewbutton.setText("View");
-        viewbutton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewbuttonActionPerformed(evt);
-            }
-        });
-
-        jButton6.setText("Modify");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(viewbutton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton6))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(stats, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(viewbutton)
-                    .addComponent(jButton6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(stats, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
 
         jButton5.setText("Log Out");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -408,6 +290,136 @@ ResultSet rs=null;
             }
         });
 
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel2.setMaximumSize(new java.awt.Dimension(632, 288));
+        jPanel2.setMinimumSize(new java.awt.Dimension(0, 288));
+
+        jLabel1.setFont(new java.awt.Font("FreeSans", 0, 15)); // NOI18N
+        jLabel1.setText("ANSH Status");
+
+        jLabel5.setText("Projects");
+
+        jLabel6.setText("Project(OnGoing)");
+
+        jLabel7.setText("Paper");
+
+        projects.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "Title 1"
+            }
+        ));
+        jScrollPane1.setViewportView(projects);
+
+        projectsog.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "Title 1"
+            }
+        ));
+        jScrollPane2.setViewportView(projectsog);
+
+        paper.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "Title 1"
+            }
+        ));
+        jScrollPane3.setViewportView(paper);
+
+        jButton11.setText("Export");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout statsLayout = new javax.swing.GroupLayout(stats);
+        stats.setLayout(statsLayout);
+        statsLayout.setHorizontalGroup(
+            statsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(statsLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(statsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addGroup(statsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addGroup(statsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addGap(0, 30, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, statsLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton11)
+                .addContainerGap())
+        );
+        statsLayout.setVerticalGroup(
+            statsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(statsLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(statsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(statsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton11)
+                .addContainerGap(13, Short.MAX_VALUE))
+        );
+
+        jButton6.setText("Modify");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton6)
+                .addContainerGap())
+            .addComponent(stats, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jButton6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(stats, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -422,24 +434,29 @@ ResultSet rs=null;
                         .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(36, 36, 36)
-                .addComponent(as, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(as, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         searchcombo.setEditable(true);
@@ -465,17 +482,6 @@ ResultSet rs=null;
                 jButton9ActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -525,7 +531,7 @@ ResultSet rs=null;
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(more)))
-                .addContainerGap(183, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -539,6 +545,28 @@ ResultSet rs=null;
                     .addComponent(jButton2)
                     .addComponent(more))
                 .addContainerGap(22, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout chartpanelLayout = new javax.swing.GroupLayout(chartpanel);
+        chartpanel.setLayout(chartpanelLayout);
+        chartpanelLayout.setHorizontalGroup(
+            chartpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        chartpanelLayout.setVerticalGroup(
+            chartpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 162, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout pipanelLayout = new javax.swing.GroupLayout(pipanel);
+        pipanel.setLayout(pipanelLayout);
+        pipanelLayout.setHorizontalGroup(
+            pipanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        pipanelLayout.setVerticalGroup(
+            pipanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 205, Short.MAX_VALUE)
         );
 
         jMenu1.setText("Master Entry");
@@ -756,69 +784,63 @@ ResultSet rs=null;
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(122, 122, 122)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(searchcombo, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 217, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 176, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton7))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton7, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(chartpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(pipanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addContainerGap(993, Short.MAX_VALUE)
+                    .addContainerGap(1300, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(89, 89, 89)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(16, 16, 16)
-                                .addComponent(jButton5))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(searchcombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton7)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(133, 133, 133)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(38, 38, 38))))))
+                            .addComponent(jButton5)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(searchcombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(chartpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                        .addComponent(pipanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(104, 104, 104))))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(83, 83, 83)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(321, Short.MAX_VALUE)))
+                    .addContainerGap(411, Short.MAX_VALUE)))
         );
 
         pack();
@@ -988,6 +1010,200 @@ model = (DefaultTableModel) DbUtils.resultSetToTableModel(rs);
         frm.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+public Dimension chartsize() {
+    // given some values of w & h
+    return new Dimension(1100,480);
+}
+   public JFreeChart generatebarChart() throws SQLException {
+		//DefaultPieDataset dataSet = new DefaultPieDataset();
+       DefaultCategoryDataset dataSet =new DefaultCategoryDataset( );
+           
+      int i, ad,mci,pd,pad,hy,ho,dmt;
+
+    String mciy,ady,pdy,pady,hyy,hoy,dmty;
+     
+                                        String sql1 = "SELECT COUNT(SubjectId),RIGHT(DOS,2)AS 'Year' FROM `Master_record` WHERE Status LIKE '%AD%' GROUP BY RIGHT(DOS,2)";
+                                              pst = con.prepareStatement(sql1);
+                                                 rs=pst.executeQuery();       
+                                                 i=1;
+                                                   
+                                          while(rs.next())
+                                                {
+                                                  
+                                                                         ad=rs.getInt(1);
+                                              ady=rs.getString(2);
+                                                
+                                                    
+                                       
+                                                     dataSet.setValue(ad, "AD",ady);
+                                                i++;}
+                                          sql1 = "SELECT COUNT(SubjectId),RIGHT(DOS,2)AS 'Year' FROM `Master_record` WHERE Status LIKE '%MCI%' GROUP BY RIGHT(DOS,2)";
+                                              pst = con.prepareStatement(sql1);
+                                              i=1; 
+                                              rs=pst.executeQuery();       
+                                          while(rs.next())
+                                                {
+                                                     
+                                                                                   mci=rs.getInt(1);
+                                              mciy=rs.getString(2);
+                                                
+                                                    
+                                       
+                                                     dataSet.setValue(mci, "MCI",mciy);
+//                                                    mci[i]=Integer.parseInt(rs.getString(1));
+//                                              
+//                                                mciy[i]=rs.getString(2);
+//                                                              dataSet.setValue(mci[i], "MCI","Year");
+                                                i++;
+                                                }
+                                          sql1 = "SELECT COUNT(SubjectId),RIGHT(DOS,2)AS 'Year' FROM `Master_record` WHERE Status LIKE '%PD%' GROUP BY RIGHT(DOS,2) ";
+                                              pst = con.prepareStatement(sql1);
+                                                 rs=pst.executeQuery();       
+                                                i=1; 
+                                              rs=pst.executeQuery();       
+                                          while(rs.next())
+                                                {
+                                                                               pd=rs.getInt(1);
+                                              pdy=rs.getString(2);
+                                                
+                                                    
+                                       
+                                                     dataSet.setValue(pd, "PD",pdy);
+                                                i++;
+                                                         }
+                                          sql1 = "SELECT COUNT(SubjectId),RIGHT(DOS,2)AS 'Year' FROM `Master_record` WHERE Status LIKE '%PAD%' GROUP BY RIGHT(DOS,2)";
+                                              pst = con.prepareStatement(sql1);
+                                                 rs=pst.executeQuery();       
+                                             i=1; 
+                                              rs=pst.executeQuery();       
+                                          while(rs.next())
+                                                {
+                                                                               pad=rs.getInt(1);
+                                              pady=rs.getString(2);
+                                                
+                                                    
+                                       
+                                                     dataSet.setValue(pad, "PAD",pady);
+                                                i++;
+                                                }   
+                                               sql1 = "SELECT COUNT(SubjectId),RIGHT(DOS,2)AS 'Year' FROM `Master_record` WHERE Status LIKE '%HY%' GROUP BY RIGHT(DOS,2)";
+                                              pst = con.prepareStatement(sql1);
+                                                 rs=pst.executeQuery();       
+                                                 i=1; 
+                                              rs=pst.executeQuery();       
+                                          while(rs.next())
+                                                {
+                                                                               hy=rs.getInt(1);
+                                              hyy=rs.getString(2);
+                                                
+                                                    
+                                       
+                                                     dataSet.setValue(hy, "HY",hyy);
+                                                i++;
+                                                }
+                                          sql1 = "SELECT COUNT(SubjectId),RIGHT(DOS,2)AS 'Year' FROM `Master_record` WHERE Status LIKE '%HO%' GROUP BY RIGHT(DOS,2) ";
+                                              pst = con.prepareStatement(sql1);
+                                                 rs=pst.executeQuery();       
+                                              i=1; 
+                                              rs=pst.executeQuery();       
+                                          while(rs.next())
+                                                {
+                                                                               ho=rs.getInt(1);
+                                              hoy=rs.getString(2);
+                                                
+                                                    
+                                       
+                                                     dataSet.setValue(ho, "HO",hoy);
+                                                i++;
+                                                }
+                                     
+                                          sql1 = "SELECT COUNT(SubjectId),RIGHT(DOS,2)AS 'Year' FROM `Master_record` WHERE Status LIKE '%mentia%' GROUP BY RIGHT(DOS,2) ";
+                                              pst = con.prepareStatement(sql1);
+                                                 rs=pst.executeQuery();       
+                                                     i=1; 
+                                              rs=pst.executeQuery();       
+                                          while(rs.next())
+                                                {
+                                                                              dmt=rs.getInt(1);
+                                              dmty=rs.getString(2);
+                                                
+                                                    
+                                       
+                                                     dataSet.setValue(dmt, "Dementia",dmty);
+                                                i++;
+                                                }
+                                   
+		//JFreeChart chart = ChartFactory.createPieChart(
+		//		"Current Status", dataSet, true, true, true);
+JFreeChart chart = ChartFactory.createBarChart3D("Status Per Year", "Year","Number",dataSet, PlotOrientation.VERTICAL,true, true, false);
+chart.createBufferedImage(650, 420);
+CategoryPlot p = chart.getCategoryPlot();
+chart.setBackgroundPaint(null);
+p.setRangeGridlinePaint(Color.BLACK);
+ChartFrame frame = new ChartFrame("Status",chart);
+frame.setVisible(true);
+BarRenderer br = (BarRenderer) p.getRenderer();
+br.setMaximumBarWidth(0.55);
+
+		return chart;
+	} 
+    
+public  JFreeChart generatePieChart() throws SQLException {
+		DefaultPieDataset dataSet = new DefaultPieDataset();
+		  String sql2 = "SELECT COUNT(SubjectId) FROM `Master_record` WHERE Status LIKE '%AD%' ";
+                                              pst = con.prepareStatement(sql2);
+                                                 rs=pst.executeQuery();       
+                                      if(rs.next())
+                                                { dataSet.setValue("AD", rs.getInt(1)); }
+                                       sql2 = "SELECT COUNT(SubjectId) FROM `Master_record` WHERE Status LIKE '%PD%' ";
+                                              pst = con.prepareStatement(sql2);
+                                                 rs=pst.executeQuery();       
+                                      if(rs.next())
+                                                { dataSet.setValue("PD", rs.getInt(1)); }
+                                           sql2 = "SELECT COUNT(SubjectId) FROM `Master_record` WHERE Status LIKE '%PAD%' ";
+                                              pst = con.prepareStatement(sql2);
+                                                 rs=pst.executeQuery();       
+                                      if(rs.next())
+                                                { dataSet.setValue("PAD", rs.getInt(1)); }
+                                           sql2 = "SELECT COUNT(SubjectId) FROM `Master_record` WHERE Status LIKE '%MCI%' ";
+                                              pst = con.prepareStatement(sql2);
+                                                 rs=pst.executeQuery();       
+                                      if(rs.next())
+                                                { dataSet.setValue("MCI", rs.getInt(1)); }
+                                           sql2 = "SELECT COUNT(SubjectId) FROM `Master_record` WHERE Status LIKE '%HY%' ";
+                                              pst = con.prepareStatement(sql2);
+                                                 rs=pst.executeQuery();       
+                                      if(rs.next())
+                                                { dataSet.setValue("HY", rs.getInt(1)); }
+                                               sql2 = "SELECT COUNT(SubjectId) FROM `Master_record` WHERE Status LIKE '%HO%' ";
+                                              pst = con.prepareStatement(sql2);
+                                                 rs=pst.executeQuery();       
+                                      if(rs.next())
+                                                { dataSet.setValue("HO", rs.getInt(1)); }
+                                               sql2 = "SELECT COUNT(SubjectId) FROM `Master_record` WHERE Status LIKE '%mentia%' ";
+                                              pst = con.prepareStatement(sql2);
+                                                 rs=pst.executeQuery();       
+                                      if(rs.next())
+                                                { dataSet.setValue("Dementia", rs.getInt(1)); }
+		JFreeChart chart = ChartFactory.createPieChart(
+				"Overall Status", dataSet, true, true, false);
+                                    chart.setBackgroundPaint(null);
+                                    PiePlot plot = (PiePlot) chart.getPlot();
+		java.awt.Font fnt = new java.awt.Font("TimesNewRoman", Font.BOLD, 14);
+		plot.setLabelFont(fnt);
+                plot.setLabelBackgroundPaint(null);
+                plot.setLabelOutlinePaint(null);
+                plot.setLabelShadowPaint(null);
+                           plot.setSectionPaint("HY", new Color(120, 0, 120));
+                            plot.setSectionPaint("HO", new Color(240,128,128));
+                             plot.setSectionPaint("MCI", new Color(46, 131, 148));
+                              plot.setSectionPaint("AD", new Color(0, 0, 128));
+                                plot.setSectionPaint("PAD", new Color(0, 255, 255));
+                               
+		return chart;
+	}
+
+    
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 Subject_form frm=new Subject_form();
 frm.setVisible(true);
@@ -1233,19 +1449,6 @@ login_det frm = new login_det();
     }
     }//GEN-LAST:event_jButton11ActionPerformed
 
-    private void viewbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewbuttonActionPerformed
-    try {
-        generate_status();
-    } catch (SQLException ex) {
-        Logger.getLogger(Main_menu.class.getName()).log(Level.SEVERE, null, ex);
-    }
-        stats.setVisible(true);
-        if(!viewbutton.isSelected())
-        {
-            stats.setVisible(false);
-        }
-    }//GEN-LAST:event_viewbuttonActionPerformed
-
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
        modify md = new modify();
        md.setVisible(true);
@@ -1292,6 +1495,7 @@ login_det frm = new login_det();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton as;
+    private javax.swing.JPanel chartpanel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -1339,18 +1543,17 @@ login_det frm = new login_det();
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JButton more;
     private javax.swing.JTable paper;
+    private javax.swing.JPanel pipanel;
     private javax.swing.JTable projects;
     private javax.swing.JTable projectsog;
     private javax.swing.JComboBox<String> ptable;
     private javax.swing.JComboBox<String> searchcombo;
     private javax.swing.JPanel stats;
-    private javax.swing.JToggleButton viewbutton;
     // End of variables declaration//GEN-END:variables
 }

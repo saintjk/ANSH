@@ -67,6 +67,7 @@ public class export_pdf {
  public static void main(String[] args) {
         try {
             Document document = new Document();
+          
             PdfWriter.getInstance(document, new FileOutputStream(FILE));
             document.open();
 
@@ -98,7 +99,7 @@ public class export_pdf {
             //adding table headers
             for (int i = 0; i < table.getColumnCount(); i++) {
              PdfPCell c1 = new PdfPCell(new Phrase(table.getColumnName(i),subFont));
-            
+             c1.setBackgroundColor(BaseColor.LIGHT_GRAY);
              c1.setHorizontalAlignment(Element.ALIGN_CENTER);  
              pdfTable.addCell(c1);
             }
@@ -109,7 +110,7 @@ public class export_pdf {
                       PdfPCell c2 = new PdfPCell(new Phrase(table.getModel().getValueAt(rows, cols).toString(),small));
                         c2.setHorizontalAlignment(Element.ALIGN_CENTER);  
                        
-                        c2.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                       
                     pdfTable.addCell(c2);
 
                 }

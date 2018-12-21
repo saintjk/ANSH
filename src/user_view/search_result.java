@@ -43,8 +43,8 @@ con= Connect.ConnectDB();
     // String merge = "%"+ jText_Search.getText() +"%";
       String k = "%"+key+"%";
       String sql1="SET @count:=0;"; 
-       
-               String sql="SELECT  (@count:=@count+1) AS 'Sr no',SubjectId as 'Subject Id',Name as 'Name',Gender as 'Gender',Status as 'Status',DOB as 'DOB',Age as 'Age',Comments as 'Comments',DOS as 'DOS' from Master_record  WHERE SubjectId LIKE '" +k+"' OR Name LIKE '" +k+ "'OR DOS LIKE '" +k+ "' ORDER BY Srno ASC";
+  
+               String sql="SELECT  (@count:=@count+1) AS 'Sr no',Entry_no as 'Entry ID',SubjectId as 'Subject Id',Name as 'Name',Gender as 'Gender',Status as 'Status',DOB as 'DOB',Age as 'Age',Comments as 'Comments',DOS as 'DOS' from Master_record   WHERE SubjectId LIKE '" +k+"' OR Name LIKE '" +k+ "'OR DOS LIKE '" +k+ "' ";
       
             //JOptionPane.showMessageDialog(null,sql);
           pst1=con.prepareStatement(sql1);
@@ -91,17 +91,17 @@ con= Connect.ConnectDB();
 
         master_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Sr no", "Subject Id", "Name", "Gender", "Status", "DOB", "Age", "Comments", "DOS"
+                "Sr no", "Entry ID", "Subject Id", "Name", "Gender", "Status", "DOB", "Age", "Comments", "DOS"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, false, true, true, true, true, true
+                false, true, false, true, false, true, true, true, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -224,7 +224,7 @@ con= Connect.ConnectDB();
          String merge = "%"+ jText_Search.getText() +"%";
        String sql1="SET @count:=0;"; 
        
-               String sql="SELECT  (@count:=@count+1) AS 'Sr no',SubjectId as 'Subject Id',Name as 'Name',Gender as 'Gender',Status as 'Status',DOB as 'DOB',Age as 'Age',Comments as 'Comments',DOS as 'DOS' from Master_record  WHERE SubjectId LIKE '" +merge+"' OR Name LIKE '" +merge+ "'OR DOS LIKE '" +merge+ "' ORDER BY Srno ASC ";
+               String sql="SELECT  (@count:=@count+1) AS 'Sr no',Entry_no as 'Entry ID',SubjectId as 'Subject Id',Name as 'Name',Gender as 'Gender',Status as 'Status',DOB as 'DOB',Age as 'Age',Comments as 'Comments',DOS as 'DOS' from Master_record  WHERE SubjectId LIKE '" +merge+"' OR Name LIKE '" +merge+ "'OR DOS LIKE '" +merge+ "' ORDER BY Srno ASC ";
         try{
          pst1=con.prepareStatement(sql1);
           pst=con.prepareStatement(sql);
@@ -266,13 +266,15 @@ rowcnt.setText(row);
     private void master_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_master_tableMouseClicked
         viewbutton.setEnabled(true);
         int rw = master_table.getSelectedRow();
-     table_id =master_table.getModel().getValueAt(rw,0).toString();
+     table_id =master_table.getModel().getValueAt(rw,1).toString();
+     System.out.print(table_id);
 
     }//GEN-LAST:event_master_tableMouseClicked
 
     private void viewbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewbuttonActionPerformed
      try {
          String value = "?id="+table_id;
+         
         String URL = "http://172.31.15.127/build/test.php"+value;
         java.awt.Desktop.getDesktop().browse(java.net.URI.create(URL));
     } catch (IOException ex) {

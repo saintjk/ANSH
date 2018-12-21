@@ -20,6 +20,8 @@
     <class>subject.Clinicaldata</class>
     <class>user_view.user_subject.Masterrecord</class>
     <class>user_view.UsersLog</class>
+    <class>ansh_gui.status.Paper</class>
+    <class>ansh_gui.status.ProjectOnGoing</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://172.31.15.127:3306/ANSH?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="ansh"/>
