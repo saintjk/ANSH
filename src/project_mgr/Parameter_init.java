@@ -145,13 +145,14 @@ int flagv;
            JOptionPane.showMessageDialog( this, "Number of parameters should be more than 4.","Error", JOptionPane.ERROR_MESSAGE);
            return;
             }
-        
+        String pname;
          Statement stmt;
        stmt= con.createStatement();
        String sql="Select Name from Project where Prj_ID= '" + pr_id.getText() + "'";
       rs=stmt.executeQuery(sql);
       int nm = rs.getInt(1);
       if(rs.next()){
+       pname=rs.getString(1);
         Parameter_setup frm=new Parameter_setup(nm,num);
      frm.setVisible(true);    
     

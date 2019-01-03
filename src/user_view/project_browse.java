@@ -6,6 +6,7 @@
 package user_view;
 
 import ansh_gui.Connect;
+import ansh_gui.project_data_viewer;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.sql.Connection;
@@ -54,12 +55,12 @@ Dimension d = new Dimension();
 d.setSize(w, h);
 table.setPreferredScrollableViewportSize(d);
             con= Connect.ConnectDB();
-              String sqlc="select COUNT(*) from " +nm+ " ";
+              String sqlc="select COUNT(*) from `" +nm+ "` ";
                pst=con.prepareStatement(sqlc);
              rs= pst.executeQuery();
              rs.next();
              rows=rs.getInt(1);
-             String sql="select * from " +nm+ " ";
+             String sql="select * from `" +nm+ "` ";
              System.out.println(sql);
             // table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
              pst=con.prepareStatement(sql);
@@ -157,7 +158,7 @@ table.setPreferredScrollableViewportSize(d);
         });
         jScrollPane2.setViewportView(table);
 
-        viewbutton.setText("View Report");
+        viewbutton.setText("More");
         viewbutton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewbuttonActionPerformed(evt);
@@ -193,7 +194,7 @@ table.setPreferredScrollableViewportSize(d);
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(viewbutton)
-                .addGap(152, 152, 152))
+                .addGap(25, 25, 25))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,7 +222,8 @@ table.setPreferredScrollableViewportSize(d);
     }//GEN-LAST:event_tableMouseClicked
 
     private void viewbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewbuttonActionPerformed
-        // TODO add your handling code here:
+            project_data_viewer tf = new project_data_viewer();
+           tf.setVisible(true);
     }//GEN-LAST:event_viewbuttonActionPerformed
 
     /**
