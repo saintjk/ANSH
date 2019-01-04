@@ -548,12 +548,12 @@ name=(String) ptable.getSelectedItem();
          try {
               ptable.setEnabled(true);
           
-              String sql = "SELECT COUNT(*) FROM `Project(OnGoing)` ";
+              String sql = "SELECT COUNT(*) FROM `Project_OnGoing` ";
               pst = con.prepareStatement(sql);
               rs=pst.executeQuery(); 
               if(rs.next())
               {        rnum=rs.getInt(1);    }
-              String sqlp = "SELECT Name FROM `Project(OnGoing)`";
+              String sqlp = "SELECT Name FROM `Project_OnGoing`";
               pst = con.prepareStatement(sqlp);
    
         //pst.setString(1,uname );
